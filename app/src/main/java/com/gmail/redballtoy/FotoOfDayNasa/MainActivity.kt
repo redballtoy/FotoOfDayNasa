@@ -13,8 +13,5 @@ class MainActivity : AppCompatActivity() {
 data class DataModel(
     val explanation: String?,
     val url: String?
+
 )
-interface PictureOfTheDayApi {
-    GET("planetary/apod")
-    fun getPictureOfTheday
-}
