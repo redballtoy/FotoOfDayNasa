@@ -10,8 +10,11 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
+//data model into which we will convert json server response
 data class DataModel(
     val explanation: String?,
+    val hdurl: String?,
+    val media_type: String?,
+    val title: String?,
     val url: String?
-
 )
