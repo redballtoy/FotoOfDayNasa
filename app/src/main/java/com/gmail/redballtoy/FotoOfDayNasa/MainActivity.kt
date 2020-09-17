@@ -1,8 +1,12 @@
 package com.gmail.redballtoy.FotoOfDayNasa
 
+import android.content.Intent
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings.Global.getString
+import android.util.Log
+import coil.load
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
@@ -18,6 +22,7 @@ class MainActivity : AppCompatActivity() {
 
     private val retrofitImpl: RetrofitImpl = RetrofitImpl()
     private val api_key: String = "yY7C5lRllfsLe81634NAJ1PWBDEfDRyvt2KBMLkO"
+    private var myLog: String = "myLog"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,10 +59,35 @@ class MainActivity : AppCompatActivity() {
             //Error
         } else {
             val url: String? = dataModel.url
-            tv_explanation.text=url
-
+            if (url.isNullOrEmpty()) {
+                Log.e(myLog, "Ссылка на фото url пустая")
+            } else {
+                val media_type: String? = dataModel.media_type
+                if (media_type.isNullOrEmpty()) {
+                    Log.e(myLog, "Ссылка на media_type пустая")
+                } else {
+                    if (media_type == "image") {
+                        iv_show_picture.load(url)
+                    } else {
+                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+                    }
+                }
             }
+            val title: String? = dataModel.title
+            if (title.isNullOrEmpty()) {
+                Log.e(myLog, "Ссылка на title пустая")
+            } else {
+                tv_title.text = title
+            }
+            val explanation: String? = dataModel.explanation
+            if (explanation.isNullOrEmpty()) {
+                Log.e(myLog, "Ссылка на explanation пустая")
+            } else {
+                tv_explanation.text = explanation
+            }
+
         }
+    }
 
 }
 
