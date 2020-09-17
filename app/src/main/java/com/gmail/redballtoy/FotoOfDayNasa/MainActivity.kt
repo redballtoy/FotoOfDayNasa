@@ -6,6 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings.Global.getString
 import android.util.Log
+import android.view.View
+import android.widget.Toast
 import coil.load
 import com.google.gson.GsonBuilder
 import kotlinx.android.synthetic.main.activity_main.*
@@ -23,12 +25,17 @@ class MainActivity : AppCompatActivity() {
     private val retrofitImpl: RetrofitImpl = RetrofitImpl()
     private val api_key: String = "yY7C5lRllfsLe81634NAJ1PWBDEfDRyvt2KBMLkO"
     private var myLog: String = "myLog"
+    private var hdurl: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         //send request to server
         sendServerRequst()
+        iv_show_picture.setOnClickListener(){
+            //Toast.makeText(applicationContext,"Нажата картинка",Toast.LENGTH_SHORT).show()
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(hdurl)))
+        }
 
     }
 
@@ -86,9 +93,13 @@ class MainActivity : AppCompatActivity() {
                 tv_explanation.text = explanation
             }
 
+            if (dataModel.hdurl.isNullOrEmpty()) {
+                Log.e(myLog, "Ссылка на hdurl пустая")
+            } else {
+                hdurl = dataModel.hdurl
+            }
         }
     }
-
 }
 
 
